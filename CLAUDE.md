@@ -1,0 +1,44 @@
+# Running Agents
+
+This directory contains agents for analyzing personal running data.
+
+## Agents
+
+| Agent | Spec | Script | Purpose |
+|-------|------|--------|---------|
+| Zone 2 Analyzer | `agents/zone2_agent.md` | `scripts/zone2_analyzer.py` | Adjusted pace trend at 125 bpm reference HR |
+
+## Structure
+
+```
+Running/
+├── CLAUDE.md
+├── agents/
+│   └── zone2_agent.md              # Agent definition (orchestrates skills)
+├── skills/
+│   ├── extract_run_data.md         # Vision extraction from screenshots
+│   ├── calculate_adjusted_pace.md  # 125 bpm pace normalization formula
+│   └── plot_trend.md               # Trend chart specification
+├── scripts/
+│   ├── zone2_analyzer.py           # Claude vision extractor + chart
+│   └── run_chart.py                # Standalone chart from extracted data
+├── data/
+│   └── zone 2 records/             # Apple Fitness PNG screenshots
+└── output/
+    └── zone2_trend.png             # Generated chart
+```
+
+## Data Source
+
+- **App:** Apple Fitness (Workout Details screen)
+- **Format:** PNG screenshots
+- **Fields used:** Date, Avg. Pace (min/km), Avg. Heart Rate (bpm)
+
+## Running an Agent
+
+```bash
+cd scripts
+pip install anthropic matplotlib
+export ANTHROPIC_API_KEY=sk-...
+python zone2_analyzer.py
+```
