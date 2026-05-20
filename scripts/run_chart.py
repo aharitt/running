@@ -7,6 +7,8 @@ import matplotlib.dates as mdates
 
 OUTPUT_DIR = Path(__file__).parent.parent / "output"
 TARGET_HR = 125
+ZONE2_MIN = 121
+ZONE2_MAX = 131
 
 records = [
     {"date": "2025-05-09", "avg_pace": "10:15", "avg_hr": 126},
@@ -27,30 +29,41 @@ def sec_to_pace(s):
 
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-dates, actual, adjusted, hrs = [], [], [], []
-print(f"{'Date':<12} {'Pace':>8} {'HR':>6} {'Adj. Pace':>10}")
-print("-" * 42)
+dates, actual, adjusted, hrs, in_z2 = [], [], [], [], []
+print(f"{'Date':<12} {'Pace':>8} {'HR':>6} {'Adj. Pace':>10}  {'Zone':>5}")
+print("-" * 48)
 for r in records:
     d = datetime.strptime(r["date"], "%Y-%m-%d")
     ap = pace_to_sec(r["avg_pace"])
     adj = ap * (r["avg_hr"] / TARGET_HR)
+    z2 = ZONE2_MIN <= r["avg_hr"] <= ZONE2_MAX
     dates.append(d)
     actual.append(ap)
     adjusted.append(adj)
     hrs.append(r["avg_hr"])
-    print(f"{r['date']:<12} {r['avg_pace']:>8} {r['avg_hr']:>5}bpm {sec_to_pace(adj):>10}/km")
+    in_z2.append(z2)
+    zone_label = "Z2" if z2 else "!Z2"
+    print(f"{r['date']:<12} {r['avg_pace']:>8} {r['avg_hr']:>5}bpm {sec_to_pace(adj):>10}/km  {zone_label:>5}")
 
 fig, ax = plt.subplots(figsize=(11, 5))
 
-ax.plot(dates, adjusted, marker="o", linewidth=2.5, color="#1565C0",
-        label=f"Adjusted pace (@{TARGET_HR} bpm)", zorder=3)
-ax.plot(dates, actual, marker="s", linewidth=1.5, linestyle="--", color="#90CAF9",
-        alpha=0.8, label="Actual pace", zorder=2)
+ax.plot(dates, adjusted, linewidth=2, color="#BBDEFB", zorder=2)
+ax.plot(dates, actual, linewidth=1.5, linestyle="--", color="#CFD8DC", alpha=0.7,
+        label="Actual pace", zorder=1)
+
+# Z2 and non-Z2 markers plotted separately for legend
+z2_dates  = [d for d, z in zip(dates, in_z2) if z]
+z2_adj    = [a for a, z in zip(adjusted, in_z2) if z]
+nz2_dates = [d for d, z in zip(dates, in_z2) if not z]
+nz2_adj   = [a for a, z in zip(adjusted, in_z2) if not z]
+
+ax.scatter(z2_dates,  z2_adj,  color="#1565C0", s=70, zorder=4, label=f"Zone 2 ({ZONE2_MIN}–{ZONE2_MAX} bpm)")
+ax.scatter(nz2_dates, nz2_adj, color="#F57C00", s=70, zorder=4, marker="D", label=f"Outside Zone 2 (>{ZONE2_MAX} bpm)")
 
 for d, adj, hr in zip(dates, adjusted, hrs):
     ax.annotate(f"{sec_to_pace(adj)}\n({hr}bpm)",
                 xy=(d, adj), xytext=(0, 12), textcoords="offset points",
-                ha="center", fontsize=8, color="#1565C0")
+                ha="center", fontsize=8, color="#37474F")
 
 y_vals = actual + adjusted
 y_min = min(y_vals) - 30

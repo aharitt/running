@@ -6,6 +6,15 @@ Analyze Zone 2 running sessions from Apple Fitness screenshots to track aerobic 
 
 Each session's avg. pace is adjusted to a common reference heart rate of **125 bpm**, allowing fair comparison across sessions regardless of daily HR variation. A downward trend in adjusted pace means improving aerobic efficiency.
 
+## Heart Rate Zone Definition
+
+| Zone | HR Range | Description |
+|------|----------|-------------|
+| Zone 1 | < 121 bpm | Recovery / easy |
+| **Zone 2** | **121–131 bpm** | **Aerobic base (target zone)** |
+| Zone 3 | 132–145 bpm | Tempo / threshold |
+| Zone 4+ | > 145 bpm | Hard / VO2 max |
+
 Beyond the numbers, the agent interprets results through the lens of an experienced running coach — identifying patterns, flagging concerns, and giving actionable recommendations the athlete can apply to their next training block.
 
 ## Skills

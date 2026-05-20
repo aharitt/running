@@ -19,9 +19,9 @@ The full dataset produced by [[calculate_adjusted_pace]], including:
 - Estimate the rate of improvement (sec/km per week) if trend is clear
 
 ### 2. Zone Discipline
-- What fraction of sessions are true Zone 2 (HR 120–140 bpm)?
-- Are there sessions where HR drifted above Zone 2? What does this suggest (heat, fatigue, terrain, effort)?
-- Flag sessions with HR > 145 bpm as "not Zone 2" — these inflate pace ability and should be noted separately
+- What fraction of sessions are true Zone 2 (HR **121–131 bpm**)?
+- Are there sessions where HR drifted above Zone 2 (> 131 bpm)? What does this suggest (heat, fatigue, terrain, effort)?
+- Flag sessions with HR > 131 bpm as "not Zone 2" — note them separately and do not include them in the core aerobic trend
 
 ### 3. Training Consistency
 - How many days between sessions on average?
