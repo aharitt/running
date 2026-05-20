@@ -28,20 +28,32 @@ The plan covers 29 weeks across 8 phases: Base → Build → 10K Peak → Taper 
 
 ---
 
+### Race Prep Agent
+Recommends race-day supplementals tailored to the athlete's running profile (cadence, pace, HR trend) and each race's specific demands.
+
+Covers: carbon-plated shoe selection, daily training shoes, race nutrition, warm-up protocols, form cues, and race-day checklists.
+
+**Skills:** `analyze_running_profile` → `recommend_race_supplementals`
+
+---
+
 ## Structure
 
 ```
 running/
 ├── agents/
 │   ├── zone2_agent.md              # Zone 2 + LSD analysis agent
-│   └── training_plan_agent.md      # Race training plan agent
+│   ├── training_plan_agent.md      # Race training plan agent
+│   └── race_prep_agent.md          # Race-day supplementals agent
 ├── skills/
 │   ├── extract_run_data.md         # Vision extraction from screenshots
 │   ├── classify_run_type.md        # Zone 2 vs LSD vs Other classification
 │   ├── calculate_adjusted_pace.md  # 125 bpm pace normalization formula
 │   ├── plot_trend.md               # Trend chart specification
 │   ├── coaching_analysis.md        # Expert coaching interpretation
-│   └── generate_training_plan.md   # Periodized plan generation
+│   ├── generate_training_plan.md   # Periodized plan generation
+│   ├── analyze_running_profile.md  # Cadence, pace-HR, efficiency profile
+│   └── recommend_race_supplementals.md  # Shoes, nutrition, warm-up, form
 ├── scripts/
 │   ├── zone2_analyzer.py           # Claude vision extractor + chart (requires API key)
 │   └── run_chart.py                # Standalone chart from pre-extracted data

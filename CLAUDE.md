@@ -8,6 +8,7 @@ This directory contains agents for analyzing personal running data.
 |-------|------|---------|
 | Zone 2 Analyzer | `agents/zone2_agent.md` | Adjusted pace trend, run classification, coaching report |
 | Training Plan | `agents/training_plan_agent.md` | Periodized plan from current fitness to race goals |
+| Race Prep | `agents/race_prep_agent.md` | Race-day supplementals: shoes, nutrition, warm-up, form |
 
 ## Structure
 
@@ -23,7 +24,9 @@ Running/
 │   ├── calculate_adjusted_pace.md  # 125 bpm pace normalization formula
 │   ├── plot_trend.md               # Trend chart specification
 │   ├── coaching_analysis.md        # Expert coaching interpretation
-│   └── generate_training_plan.md   # Periodized plan generation
+│   ├── generate_training_plan.md   # Periodized plan generation
+│   ├── analyze_running_profile.md  # Cadence, pace-HR, efficiency profile
+│   └── recommend_race_supplementals.md  # Shoes, nutrition, warm-up, form cues
 ├── scripts/
 │   ├── zone2_analyzer.py           # Claude vision extractor + chart
 │   └── run_chart.py                # Standalone chart from extracted data
@@ -32,7 +35,8 @@ Running/
 └── output/
     ├── zone2_trend.png             # Generated chart
     ├── coaching_report.md          # Latest coaching analysis
-    └── training_plan.md            # Race training plan
+    ├── training_plan.md            # Race training plan
+    └── race_prep_report.md         # Race-day supplemental recommendations
 ```
 
 ## Data Source
