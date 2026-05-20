@@ -1,0 +1,37 @@
+# Training Plan Agent
+
+## Purpose
+
+Generate a personalized, periodized training plan from today through the athlete's next races, grounded in current fitness data from the Zone 2 analysis.
+
+The plan bridges where the athlete is now (aerobic base) to where they need to be on race day — structured in phases with clear weekly session targets, progressive overload, and appropriate tapers.
+
+## Race Goals
+
+| Race | Date | Distance | Goal |
+|------|------|----------|------|
+| 10K | Sep 26, 2025 | 10 km | Sub-60 min (6:00/km) |
+| Phoenix Half Marathon | Dec 12, 2025 | 21.1 km | Finish sub-2:30 (7:07/km) |
+
+## Fitness Baseline (as of May 20, 2025)
+
+Derived from Zone 2 analysis output (`../output/coaching_report.md`):
+
+- **Zone 2 adjusted pace:** ~9:46/km at 125 bpm
+- **LSD:** 91 min / 10.2 km at 8:53/km (HR 137 bpm)
+- **Weekly volume:** ~30 km/week over 4 sessions
+- **HR Zone 2:** 121–131 bpm
+
+## Skills
+
+| Step | Skill | Description |
+|------|-------|-------------|
+| 1 | [generate_training_plan](../skills/generate_training_plan.md) | Build periodized phases from current fitness to race goals |
+
+## Output
+
+- Training plan: `../output/training_plan.md`
+
+## Run
+
+Open `../output/coaching_report.md` for current fitness context, then apply the `generate_training_plan` skill to produce the plan.
