@@ -18,7 +18,8 @@ Running/
 ├── skills/
 │   ├── extract_run_data.md         # Vision extraction from screenshots
 │   ├── calculate_adjusted_pace.md  # 125 bpm pace normalization formula
-│   └── plot_trend.md               # Trend chart specification
+│   ├── plot_trend.md               # Trend chart specification
+│   └── coaching_analysis.md        # Expert coaching interpretation and recommendations
 ├── scripts/
 │   ├── zone2_analyzer.py           # Claude vision extractor + chart
 │   └── run_chart.py                # Standalone chart from extracted data

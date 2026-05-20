@@ -2,9 +2,11 @@
 
 ## Purpose
 
-Analyze Zone 2 running sessions from Apple Fitness screenshots to track aerobic fitness improvement over time.
+Analyze Zone 2 running sessions from Apple Fitness screenshots to track aerobic fitness improvement over time, and provide expert coaching analysis to guide training decisions.
 
 Each session's avg. pace is adjusted to a common reference heart rate of **125 bpm**, allowing fair comparison across sessions regardless of daily HR variation. A downward trend in adjusted pace means improving aerobic efficiency.
+
+Beyond the numbers, the agent interprets results through the lens of an experienced running coach — identifying patterns, flagging concerns, and giving actionable recommendations the athlete can apply to their next training block.
 
 ## Skills
 
@@ -13,6 +15,7 @@ Each session's avg. pace is adjusted to a common reference heart rate of **125 b
 | 1 | [extract_run_data](../skills/extract_run_data.md) | Read screenshots and extract date, avg pace, avg HR |
 | 2 | [calculate_adjusted_pace](../skills/calculate_adjusted_pace.md) | Normalize pace to 125 bpm reference HR |
 | 3 | [plot_trend](../skills/plot_trend.md) | Generate time-series trend chart |
+| 4 | [coaching_analysis](../skills/coaching_analysis.md) | Interpret results and provide expert coaching insights |
 
 ## Data Source
 
