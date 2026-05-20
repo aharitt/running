@@ -9,16 +9,24 @@ OUTPUT_DIR = Path(__file__).parent.parent / "output"
 TARGET_HR = 125
 ZONE2_MIN = 121
 ZONE2_MAX = 131
+LSD_MIN_MIN = 75  # minutes
 
 records = [
-    {"date": "2025-05-09", "avg_pace": "10:15", "avg_hr": 126},
-    {"date": "2025-05-11", "avg_pace": "9:58",  "avg_hr": 128},
-    {"date": "2025-05-12", "avg_pace": "10:14", "avg_hr": 130},
-    {"date": "2025-05-14", "avg_pace": "9:40",  "avg_hr": 130},
-    {"date": "2025-05-16", "avg_pace": "8:53",  "avg_hr": 137},
-    {"date": "2025-05-18", "avg_pace": "9:29",  "avg_hr": 129},
-    {"date": "2025-05-20", "avg_pace": "9:20",  "avg_hr": 131},
+    {"date": "2025-05-09", "duration_min": 60.1, "avg_pace": "10:15", "avg_hr": 126},
+    {"date": "2025-05-11", "duration_min": 60.1, "avg_pace": "9:58",  "avg_hr": 128},
+    {"date": "2025-05-12", "duration_min": 60.2, "avg_pace": "10:14", "avg_hr": 130},
+    {"date": "2025-05-14", "duration_min": 60.1, "avg_pace": "9:40",  "avg_hr": 130},
+    {"date": "2025-05-16", "duration_min": 90.6, "avg_pace": "8:53",  "avg_hr": 137},
+    {"date": "2025-05-18", "duration_min": 60.1, "avg_pace": "9:29",  "avg_hr": 129},
+    {"date": "2025-05-20", "duration_min": 64.3, "avg_pace": "9:20",  "avg_hr": 131},
 ]
+
+def classify(duration_min, avg_hr):
+    if duration_min >= LSD_MIN_MIN:
+        return "LSD"
+    if ZONE2_MIN <= avg_hr <= ZONE2_MAX:
+        return "Zone 2"
+    return "Other"
 
 def pace_to_sec(s):
     m, sec = s.split(":")
@@ -29,21 +37,21 @@ def sec_to_pace(s):
 
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-dates, actual, adjusted, hrs, in_z2 = [], [], [], [], []
-print(f"{'Date':<12} {'Pace':>8} {'HR':>6} {'Adj. Pace':>10}  {'Zone':>5}")
-print("-" * 48)
+dates, actual, adjusted, hrs, run_types = [], [], [], [], []
+print(f"{'Date':<12} {'Duration':>9} {'Pace':>8} {'HR':>6} {'Adj. Pace':>10}  {'Type':<7}")
+print("-" * 58)
 for r in records:
     d = datetime.strptime(r["date"], "%Y-%m-%d")
     ap = pace_to_sec(r["avg_pace"])
     adj = ap * (r["avg_hr"] / TARGET_HR)
-    z2 = ZONE2_MIN <= r["avg_hr"] <= ZONE2_MAX
+    rtype = classify(r["duration_min"], r["avg_hr"])
     dates.append(d)
     actual.append(ap)
     adjusted.append(adj)
     hrs.append(r["avg_hr"])
-    in_z2.append(z2)
-    zone_label = "Z2" if z2 else "!Z2"
-    print(f"{r['date']:<12} {r['avg_pace']:>8} {r['avg_hr']:>5}bpm {sec_to_pace(adj):>10}/km  {zone_label:>5}")
+    run_types.append(rtype)
+    print(f"{r['date']:<12} {r['duration_min']:>7.1f}m {r['avg_pace']:>8} {r['avg_hr']:>5}bpm "
+          f"{sec_to_pace(adj):>10}/km  {rtype:<7}")
 
 fig, ax = plt.subplots(figsize=(11, 5))
 
@@ -51,16 +59,19 @@ ax.plot(dates, adjusted, linewidth=2, color="#BBDEFB", zorder=2)
 ax.plot(dates, actual, linewidth=1.5, linestyle="--", color="#CFD8DC", alpha=0.7,
         label="Actual pace", zorder=1)
 
-# Z2 and non-Z2 markers plotted separately for legend
-z2_dates  = [d for d, z in zip(dates, in_z2) if z]
-z2_adj    = [a for a, z in zip(adjusted, in_z2) if z]
-nz2_dates = [d for d, z in zip(dates, in_z2) if not z]
-nz2_adj   = [a for a, z in zip(adjusted, in_z2) if not z]
+MARKERS = {
+    "Zone 2": ("o", "#1565C0"),
+    "LSD":    ("*", "#2E7D32"),
+    "Other":  ("D", "#F57C00"),
+}
+for rtype, (marker, color) in MARKERS.items():
+    idx = [i for i, t in enumerate(run_types) if t == rtype]
+    if idx:
+        ax.scatter([dates[i] for i in idx], [adjusted[i] for i in idx],
+                   color=color, s=120 if marker == "*" else 70,
+                   marker=marker, zorder=4, label=rtype)
 
-ax.scatter(z2_dates,  z2_adj,  color="#1565C0", s=70, zorder=4, label=f"Zone 2 ({ZONE2_MIN}–{ZONE2_MAX} bpm)")
-ax.scatter(nz2_dates, nz2_adj, color="#F57C00", s=70, zorder=4, marker="D", label=f"Outside Zone 2 (>{ZONE2_MAX} bpm)")
-
-for d, adj, hr in zip(dates, adjusted, hrs):
+for d, adj, hr, rtype in zip(dates, adjusted, hrs, run_types):
     ax.annotate(f"{sec_to_pace(adj)}\n({hr}bpm)",
                 xy=(d, adj), xytext=(0, 12), textcoords="offset points",
                 ha="center", fontsize=8, color="#37474F")
