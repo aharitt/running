@@ -34,7 +34,7 @@ Divide the full training window into phases based on standard 10K / half-maratho
 | Thu | Rest | |
 | Fri | Zone 2 — 60 min | |
 | Sat | Rest | |
-| Sun | LSD — 90–120 min | HR ≤ 131 bpm, conversational pace |
+| Sun | LSD — 90–120 min | HR ≤ 140 bpm, conversational pace |
 
 ## Pace Targets by Phase
 

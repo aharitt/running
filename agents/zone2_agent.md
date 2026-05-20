@@ -13,7 +13,7 @@ Beyond the numbers, the agent interprets results through the lens of an experien
 | Type | Criteria | Purpose |
 |------|----------|---------|
 | **Zone 2** | Duration < 75 min AND HR 121–131 bpm | Aerobic base building |
-| **LSD** | Duration ≥ 75 min | Endurance, fat oxidation, aerobic volume |
+| **LSD** | Duration ≥ 75 min, HR ≤ 140 bpm | Endurance, fat oxidation, aerobic volume |
 | **Other** | HR outside 121–131 bpm AND duration < 75 min | Tempo, recovery, or unclassified |
 
 ## Heart Rate Zone Definition
