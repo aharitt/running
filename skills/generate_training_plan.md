@@ -24,17 +24,35 @@ Divide the full training window into phases based on standard 10K / half-maratho
 | **Taper** | Freshness for race day | Volume cut 40–50%, short quality sessions |
 | **Recovery** | Post-race rebuild | Zone 1–2 only, 1–2 weeks |
 
-### Weekly Session Structure (Base Phase Example)
+### Weekly Session Structure
+
+**Rule: No back-to-back Zone 2 days.** Every Zone 2 or LSD session requires at least one rest day before it. The only accepted consecutive pair is Mon (easy Zone 2) → Tue (quality tempo/intervals): an easy prep day before a hard session is standard practice. Two Zone 2 days in a row without a rest day accumulate fatigue without quality stimulus.
+
+This caps the maximum sustainable session count at **4 per week** (Base phase) or **4 per week** (Build/Peak with 1 quality session):
+
+**Base phase (4 sessions):**
 
 | Day | Session | Notes |
 |-----|---------|-------|
 | Mon | Zone 2 — 60 min | Controlled HR 121–131 bpm |
-| Tue | Rest or walk | |
-| Wed | Zone 2 — 60–75 min | Slightly longer than Monday |
+| Tue | Rest | |
+| Wed | Zone 2 — 60–75 min | |
 | Thu | Rest | |
-| Fri | Zone 2 — 60 min | |
+| Fri | Zone 2 — 60–70 min | |
 | Sat | Rest | |
-| Sun | LSD — 90–120 min | HR ≤ 140 bpm, conversational pace |
+| Sun | LSD — 90–120 min | HR ≤ 140 bpm |
+
+**Build/Peak phase (4 sessions, 1 quality):**
+
+| Day | Session | Notes |
+|-----|---------|-------|
+| Mon | Zone 2 — 60 min | Easy prep before quality |
+| Tue | Quality (tempo or intervals) | Hard session |
+| Wed | Rest | |
+| Thu | Zone 2 — 60–65 min | |
+| Fri | Rest | |
+| Sat | Rest | |
+| Sun | LSD — 110–120 min | HR ≤ 140 bpm |
 
 ## Pace Targets by Phase
 
