@@ -14,12 +14,16 @@ MERGE_GAP_MIN = 30
 
 records = [
     {"date": "2025-05-09", "start_time": "20:45", "duration_min": 60.1, "avg_pace": "10:15", "avg_hr": 126},
-    {"date": "2025-05-11", "start_time": "07:30", "duration_min": 60.1, "avg_pace": "9:58",  "avg_hr": 128},
-    {"date": "2025-05-12", "start_time": "07:15", "duration_min": 60.2, "avg_pace": "10:14", "avg_hr": 130},
-    {"date": "2025-05-14", "start_time": "07:00", "duration_min": 60.1, "avg_pace": "9:40",  "avg_hr": 130},
-    {"date": "2025-05-16", "start_time": "07:20", "duration_min": 90.6, "avg_pace": "8:53",  "avg_hr": 137},
-    {"date": "2025-05-18", "start_time": "07:10", "duration_min": 60.1, "avg_pace": "9:29",  "avg_hr": 129},
-    {"date": "2025-05-20", "start_time": "07:05", "duration_min": 64.3, "avg_pace": "9:20",  "avg_hr": 131},
+    {"date": "2025-05-11", "start_time": "06:52", "duration_min": 60.1, "avg_pace": "9:58",  "avg_hr": 128},
+    {"date": "2025-05-12", "start_time": "20:54", "duration_min": 60.2, "avg_pace": "10:14", "avg_hr": 130},
+    {"date": "2025-05-14", "start_time": "20:28", "duration_min": 60.1, "avg_pace": "9:40",  "avg_hr": 130},
+    {"date": "2025-05-16", "start_time": "06:13", "duration_min": 90.6, "avg_pace": "8:53",  "avg_hr": 137},
+    {"date": "2025-05-18", "start_time": "07:41", "duration_min": 60.1, "avg_pace": "9:29",  "avg_hr": 129},
+    {"date": "2025-05-20", "start_time": "07:44", "duration_min": 64.3, "avg_pace": "9:20",  "avg_hr": 131},
+    {"date": "2025-05-21", "start_time": "20:58", "duration_min": 60.1, "avg_pace": "9:34",  "avg_hr": 130},
+    {"date": "2025-05-23", "start_time": "07:00", "duration_min": 80.3, "avg_pace": "9:12",  "avg_hr": 138},
+    {"date": "2025-05-23", "start_time": "08:30", "duration_min": 4.0,  "avg_pace": "10:02", "avg_hr": 141},
+    {"date": "2025-05-23", "start_time": "08:42", "duration_min": 9.5,  "avg_pace": "9:54",  "avg_hr": 132},
 ]
 
 def merge_same_day_runs(recs):
@@ -134,7 +138,8 @@ ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
 ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 fig.autofmt_xdate()
 
-ax.set_title(f"Zone 2 Pace Trend — Adjusted to {TARGET_HR} bpm  (May 2025)",
+date_range = f"{dates[0].strftime('%b %d')} – {dates[-1].strftime('%b %d, %Y')}"
+ax.set_title(f"Zone 2 Pace Trend — Adjusted to {TARGET_HR} bpm  ({date_range})",
              fontsize=14, fontweight="bold")
 ax.set_ylabel("Pace (min/km)   ← faster")
 ax.set_xlabel("Date")
