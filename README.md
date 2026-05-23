@@ -19,8 +19,8 @@ Generates a personalized, periodized training plan from current fitness to race 
 **Races:**
 | Race | Date | Goal |
 |------|------|------|
-| 10K | Sep 26, 2025 | Sub-60 min (6:00/km) |
-| Phoenix Half Marathon | Dec 12, 2025 | Sub-2:30 (7:07/km) |
+| 10K | Sep 26, 2025 | Sub-55 min (5:30/km) |
+| Phoenix Half Marathon | Dec 12, 2025 | Sub-2:20 (6:38/km) |
 
 The plan covers 29 weeks across 8 phases: Base → Build → 10K Peak → Taper → Recovery → HM Base → HM Build → HM Taper.
 

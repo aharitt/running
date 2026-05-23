@@ -10,8 +10,8 @@ The plan bridges where the athlete is now (aerobic base) to where they need to b
 
 | Race | Date | Distance | Goal |
 |------|------|----------|------|
-| 10K | Sep 26, 2025 | 10 km | Sub-60 min (6:00/km) |
-| Phoenix Half Marathon | Dec 12, 2025 | 21.1 km | Finish sub-2:30 (7:07/km) |
+| 10K | Sep 26, 2025 | 10 km | Sub-55 min (5:30/km) |
+| Phoenix Half Marathon | Dec 12, 2025 | 21.1 km | Sub-2:20 (6:38/km) |
 
 ## Fitness Baseline (as of May 20, 2025)
 
