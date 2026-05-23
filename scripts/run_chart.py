@@ -1,6 +1,6 @@
 """Standalone chart generator using extracted Zone 2 data."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -10,16 +10,57 @@ TARGET_HR = 125
 ZONE2_MIN = 121
 ZONE2_MAX = 131
 LSD_MIN_MIN = 75  # minutes
+MERGE_GAP_MIN = 30
 
 records = [
-    {"date": "2025-05-09", "duration_min": 60.1, "avg_pace": "10:15", "avg_hr": 126},
-    {"date": "2025-05-11", "duration_min": 60.1, "avg_pace": "9:58",  "avg_hr": 128},
-    {"date": "2025-05-12", "duration_min": 60.2, "avg_pace": "10:14", "avg_hr": 130},
-    {"date": "2025-05-14", "duration_min": 60.1, "avg_pace": "9:40",  "avg_hr": 130},
-    {"date": "2025-05-16", "duration_min": 90.6, "avg_pace": "8:53",  "avg_hr": 137},
-    {"date": "2025-05-18", "duration_min": 60.1, "avg_pace": "9:29",  "avg_hr": 129},
-    {"date": "2025-05-20", "duration_min": 64.3, "avg_pace": "9:20",  "avg_hr": 131},
+    {"date": "2025-05-09", "start_time": "20:45", "duration_min": 60.1, "avg_pace": "10:15", "avg_hr": 126},
+    {"date": "2025-05-11", "start_time": "07:30", "duration_min": 60.1, "avg_pace": "9:58",  "avg_hr": 128},
+    {"date": "2025-05-12", "start_time": "07:15", "duration_min": 60.2, "avg_pace": "10:14", "avg_hr": 130},
+    {"date": "2025-05-14", "start_time": "07:00", "duration_min": 60.1, "avg_pace": "9:40",  "avg_hr": 130},
+    {"date": "2025-05-16", "start_time": "07:20", "duration_min": 90.6, "avg_pace": "8:53",  "avg_hr": 137},
+    {"date": "2025-05-18", "start_time": "07:10", "duration_min": 60.1, "avg_pace": "9:29",  "avg_hr": 129},
+    {"date": "2025-05-20", "start_time": "07:05", "duration_min": 64.3, "avg_pace": "9:20",  "avg_hr": 131},
 ]
+
+def merge_same_day_runs(recs):
+    from itertools import groupby
+    sorted_recs = sorted(recs, key=lambda r: (r["date"], r.get("start_time") or ""))
+    merged = []
+    for date, group in groupby(sorted_recs, key=lambda r: r["date"]):
+        group = list(group)
+        if any(r.get("start_time") is None for r in group):
+            merged.extend(group)
+            continue
+        stack = [group[0]]
+        for nxt in group[1:]:
+            cur = stack[-1]
+            end_min = _time_to_min(cur["start_time"]) + cur["duration_min"]
+            gap = _time_to_min(nxt["start_time"]) - end_min
+            if gap < MERGE_GAP_MIN:
+                stack[-1] = _combine(cur, nxt)
+            else:
+                stack.append(nxt)
+        merged.extend(stack)
+    return merged
+
+def _time_to_min(t):
+    h, m = t.split(":")
+    return int(h) * 60 + int(m)
+
+def _combine(a, b):
+    a_dist = a["duration_min"] / (pace_to_sec(a["avg_pace"]) / 60)
+    b_dist = b["duration_min"] / (pace_to_sec(b["avg_pace"]) / 60)
+    total_dist = a_dist + b_dist
+    total_dur = a["duration_min"] + b["duration_min"]
+    merged_pace_sec = (total_dur / total_dist) * 60
+    merged_hr = (a["avg_hr"] * a["duration_min"] + b["avg_hr"] * b["duration_min"]) / total_dur
+    return {
+        "date": a["date"],
+        "start_time": a["start_time"],
+        "duration_min": round(total_dur, 1),
+        "avg_pace": sec_to_pace(merged_pace_sec),
+        "avg_hr": round(merged_hr),
+    }
 
 def classify(duration_min, avg_hr):
     if duration_min >= LSD_MIN_MIN:
@@ -36,6 +77,8 @@ def sec_to_pace(s):
     return f"{int(s)//60}:{int(s)%60:02d}"
 
 OUTPUT_DIR.mkdir(exist_ok=True)
+
+records = merge_same_day_runs(records)
 
 dates, actual, adjusted, hrs, run_types = [], [], [], [], []
 print(f"{'Date':<12} {'Duration':>9} {'Pace':>8} {'HR':>6} {'Adj. Pace':>10}  {'Type':<7}")
