@@ -8,10 +8,12 @@ The plan bridges where the athlete is now (aerobic base) to where they need to b
 
 ## Race Goals
 
-| Race | Date | Distance | Goal |
-|------|------|----------|------|
-| 10K | Sep 26, 2025 | 10 km | Sub-55 min (5:30/km) |
-| Phoenix Half Marathon | Dec 12, 2025 | 21.1 km | Sub-2:20 (6:38/km) |
+| Race | Date | Distance | Goal (Target) | A Goal | C Goal |
+|------|------|----------|---------------|--------|--------|
+| 10K | Sep 26, 2025 | 10 km | Sub-57:30 (5:45/km) | Sub-55:00 (5:30/km) | Sub-60:00 (6:00/km) |
+| Phoenix Half Marathon | Dec 12, 2025 | 21.1 km | Sub-2:20 (6:38/km) | Sub-2:15 (6:23/km) | Sub-2:30 (7:07/km) |
+
+> Training plans are generated to the **Target** level. A Goal is achievable if training goes exceptionally well. C Goal is the minimum acceptable outcome.
 
 ## Fitness Baseline (as of May 20, 2025)
 
