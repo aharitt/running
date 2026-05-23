@@ -38,11 +38,12 @@ If multiple records share the same date **and** the gap between the end of one r
 | Step | Skill | Description |
 |------|-------|-------------|
 | 1 | [extract_run_data](../skills/extract_run_data.md) | Read screenshots and extract date, start time, duration, avg pace, avg HR |
-| 2 | [merge_same_day_runs](../skills/merge_same_day_runs.md) | Combine same-day runs with < 30 min gap into one record |
-| 3 | [classify_run_type](../skills/classify_run_type.md) | Classify each session as Zone 2, LSD, or Other |
-| 4 | [calculate_adjusted_pace](../skills/calculate_adjusted_pace.md) | Normalize pace to 125 bpm reference HR |
-| 5 | [plot_trend](../skills/plot_trend.md) | Generate time-series trend chart with run type markers |
-| 6 | [coaching_analysis](../skills/coaching_analysis.md) | Interpret results and provide expert coaching insights |
+| 2 | [fetch_weather](../skills/fetch_weather.md) | Look up ambient temperature at run time and location |
+| 3 | [merge_same_day_runs](../skills/merge_same_day_runs.md) | Combine same-day runs with < 30 min gap into one record |
+| 4 | [classify_run_type](../skills/classify_run_type.md) | Classify each session as Zone 2, LSD, or Other |
+| 5 | [calculate_adjusted_pace](../skills/calculate_adjusted_pace.md) | Normalize pace to 125 bpm reference HR, then correct for heat |
+| 6 | [plot_trend](../skills/plot_trend.md) | Generate time-series trend chart with run type markers |
+| 7 | [coaching_analysis](../skills/coaching_analysis.md) | Interpret results and provide expert coaching insights |
 
 ## Data Source
 
