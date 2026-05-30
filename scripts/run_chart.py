@@ -1,6 +1,6 @@
 """Standalone chart generator using extracted Zone 2 data."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -11,21 +11,23 @@ ZONE2_MIN = 121
 ZONE2_MAX = 131
 LSD_MIN_MIN = 75  # minutes
 MERGE_GAP_MIN = 30
-HEAT_BASE_C   = 15    # reference temperature for heat correction
-HEAT_PCT_PER_C = 0.004  # ~0.4% pace penalty per °C above baseline
 
 records = [
-    {"date": "2025-05-09", "start_time": "20:45", "duration_min": 60.1, "avg_pace": "10:15", "avg_hr": 126, "temp_c": 31},
-    {"date": "2025-05-11", "start_time": "06:52", "duration_min": 60.1, "avg_pace": "9:58",  "avg_hr": 128, "temp_c": 23},
-    {"date": "2025-05-12", "start_time": "20:54", "duration_min": 60.2, "avg_pace": "10:14", "avg_hr": 130, "temp_c": 30},
-    {"date": "2025-05-14", "start_time": "20:28", "duration_min": 60.1, "avg_pace": "9:40",  "avg_hr": 130, "temp_c": 20},
-    {"date": "2025-05-16", "start_time": "06:13", "duration_min": 90.6, "avg_pace": "8:53",  "avg_hr": 137, "temp_c": 22},
-    {"date": "2025-05-18", "start_time": "07:41", "duration_min": 60.1, "avg_pace": "9:29",  "avg_hr": 129, "temp_c": 25},
-    {"date": "2025-05-20", "start_time": "07:44", "duration_min": 64.3, "avg_pace": "9:20",  "avg_hr": 131, "temp_c": 25},
-    {"date": "2025-05-21", "start_time": "20:58", "duration_min": 60.1, "avg_pace": "9:34",  "avg_hr": 130, "temp_c": 30},
-    {"date": "2025-05-23", "start_time": "07:00", "duration_min": 80.3, "avg_pace": "9:12",  "avg_hr": 138, "temp_c": 28},
-    {"date": "2025-05-23", "start_time": "08:30", "duration_min": 4.0,  "avg_pace": "10:02", "avg_hr": 141, "temp_c": 28},
-    {"date": "2025-05-23", "start_time": "08:42", "duration_min": 9.5,  "avg_pace": "9:54",  "avg_hr": 132, "temp_c": 28},
+    {"date": "2026-05-09", "start_time": "20:45", "duration_min": 60.1, "avg_pace": "10:15", "avg_hr": 126},
+    {"date": "2026-05-11", "start_time": "06:52", "duration_min": 60.1, "avg_pace": "9:58",  "avg_hr": 128},
+    {"date": "2026-05-12", "start_time": "20:54", "duration_min": 60.1, "avg_pace": "10:14", "avg_hr": 130},
+    {"date": "2026-05-14", "start_time": "20:28", "duration_min": 60.1, "avg_pace": "9:40",  "avg_hr": 130},
+    {"date": "2026-05-16", "start_time": "06:13", "duration_min": 90.6, "avg_pace": "8:53",  "avg_hr": 137},
+    {"date": "2026-05-18", "start_time": "07:41", "duration_min": 60.1, "avg_pace": "9:29",  "avg_hr": 129},
+    {"date": "2026-05-20", "start_time": "07:44", "duration_min": 64.3, "avg_pace": "9:20",  "avg_hr": 131},
+    {"date": "2026-05-21", "start_time": "20:58", "duration_min": 60.1, "avg_pace": "9:34",  "avg_hr": 130},
+    {"date": "2026-05-23", "start_time": "07:00", "duration_min": 80.3, "avg_pace": "9:12",  "avg_hr": 138},
+    {"date": "2026-05-23", "start_time": "08:30", "duration_min": 4.0,  "avg_pace": "10:02", "avg_hr": 141},
+    {"date": "2026-05-23", "start_time": "08:42", "duration_min": 9.5,  "avg_pace": "9:54",  "avg_hr": 132},
+    {"date": "2026-05-25", "start_time": "20:09", "duration_min": 60.1, "avg_pace": "9:04",  "avg_hr": 128},
+    {"date": "2026-05-27", "start_time": "06:26", "duration_min": 60.1, "avg_pace": "9:06",  "avg_hr": 131},
+    {"date": "2026-05-28", "start_time": "21:23", "duration_min": 40.4, "avg_pace": "9:06",  "avg_hr": 129},
+    {"date": "2026-05-30", "start_time": "06:13", "duration_min": 94.0, "avg_pace": "8:32",  "avg_hr": 138},
 ]
 
 def merge_same_day_runs(recs):
@@ -60,15 +62,12 @@ def _combine(a, b):
     total_dur = a["duration_min"] + b["duration_min"]
     merged_pace_sec = (total_dur / total_dist) * 60
     merged_hr = (a["avg_hr"] * a["duration_min"] + b["avg_hr"] * b["duration_min"]) / total_dur
-    merged_temp = (a.get("temp_c", HEAT_BASE_C) * a["duration_min"] +
-                   b.get("temp_c", HEAT_BASE_C) * b["duration_min"]) / total_dur
     return {
         "date": a["date"],
         "start_time": a["start_time"],
         "duration_min": round(total_dur, 1),
         "avg_pace": sec_to_pace(merged_pace_sec),
         "avg_hr": round(merged_hr),
-        "temp_c": round(merged_temp, 1),
     }
 
 def classify(duration_min, avg_hr):
@@ -89,34 +88,27 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 
 records = merge_same_day_runs(records)
 
-dates, actual, adjusted, heat_adjusted, hrs, temps, run_types = [], [], [], [], [], [], []
-print(f"{'Date':<12} {'Duration':>9} {'Pace':>8} {'HR':>6} {'Temp':>6} {'Adj.Pace':>9} {'HeatAdj':>8}  {'Type':<7}")
-print("-" * 72)
+dates, actual, adjusted, hrs, run_types = [], [], [], [], []
+print(f"{'Date':<12} {'Duration':>9} {'Pace':>8} {'HR':>6} {'Adj.Pace':>9}  {'Type':<7}")
+print("-" * 58)
 for r in records:
     d = datetime.strptime(r["date"], "%Y-%m-%d")
     ap = pace_to_sec(r["avg_pace"])
     adj = ap * (r["avg_hr"] / TARGET_HR)
-    tc = r.get("temp_c", HEAT_BASE_C)
-    heat_factor = 1 + HEAT_PCT_PER_C * max(0, tc - HEAT_BASE_C)
-    hadj = adj / heat_factor
     rtype = classify(r["duration_min"], r["avg_hr"])
     dates.append(d)
     actual.append(ap)
     adjusted.append(adj)
-    heat_adjusted.append(hadj)
     hrs.append(r["avg_hr"])
-    temps.append(tc)
     run_types.append(rtype)
     print(f"{r['date']:<12} {r['duration_min']:>7.1f}m {r['avg_pace']:>8} {r['avg_hr']:>5}bpm "
-          f"{tc:>5.0f}°C {sec_to_pace(adj):>9}/km {sec_to_pace(hadj):>8}/km  {rtype:<7}")
+          f"{sec_to_pace(adj):>9}/km  {rtype:<7}")
 
 fig, ax = plt.subplots(figsize=(12, 5))
 
-ax.plot(dates, heat_adjusted, linewidth=2, color="#BBDEFB", zorder=2,
-        label=f"Heat+HR adj. pace (@{TARGET_HR}bpm, 15°C)")
-ax.plot(dates, adjusted, linewidth=1.5, linestyle="--", color="#90A4AE", alpha=0.6,
-        label="HR adj. only", zorder=1)
-ax.plot(dates, actual, linewidth=1, linestyle=":", color="#CFD8DC", alpha=0.5,
+ax.plot(dates, adjusted, linewidth=2, color="#BBDEFB", zorder=2,
+        label=f"HR adj. pace (@{TARGET_HR}bpm)")
+ax.plot(dates, actual, linewidth=1, linestyle=":", color="#90A4AE", alpha=0.6,
         label="Actual pace", zorder=1)
 
 MARKERS = {
@@ -127,16 +119,16 @@ MARKERS = {
 for rtype, (marker, color) in MARKERS.items():
     idx = [i for i, t in enumerate(run_types) if t == rtype]
     if idx:
-        ax.scatter([dates[i] for i in idx], [heat_adjusted[i] for i in idx],
+        ax.scatter([dates[i] for i in idx], [adjusted[i] for i in idx],
                    color=color, s=140 if marker == "*" else 80,
                    marker=marker, zorder=4, label=rtype)
 
-for d, hadj, hr, tc, rtype in zip(dates, heat_adjusted, hrs, temps, run_types):
-    ax.annotate(f"{sec_to_pace(hadj)}\n({hr}bpm, {tc:.0f}°C)",
-                xy=(d, hadj), xytext=(0, 14), textcoords="offset points",
+for d, adj, hr, rtype in zip(dates, adjusted, hrs, run_types):
+    ax.annotate(f"{sec_to_pace(adj)}\n({hr}bpm)",
+                xy=(d, adj), xytext=(0, 14), textcoords="offset points",
                 ha="center", fontsize=7.5, color="#37474F")
 
-y_vals = actual + adjusted + heat_adjusted
+y_vals = actual + adjusted
 y_min = min(y_vals) - 30
 y_max = max(y_vals) + 80
 ax.set_ylim(y_max, y_min)
@@ -152,7 +144,7 @@ ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 fig.autofmt_xdate()
 
 date_range = f"{dates[0].strftime('%b %d')} – {dates[-1].strftime('%b %d, %Y')}"
-ax.set_title(f"Zone 2 Pace Trend — Heat + HR Adjusted (@{TARGET_HR}bpm, 15°C ref)  ({date_range})",
+ax.set_title(f"Zone 2 Pace Trend — HR Adjusted (@{TARGET_HR}bpm)  ({date_range})",
              fontsize=13, fontweight="bold")
 ax.set_ylabel("Pace (min/km)   ← faster")
 ax.set_xlabel("Date")
